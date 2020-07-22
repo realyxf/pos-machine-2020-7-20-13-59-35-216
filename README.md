@@ -8,7 +8,7 @@
 ___
 ## 2.上下文图
 
-![](https://s3.cn-north-1.amazonaws.com.cn/tws-upload/images/1595411729756-a504d3e6-ebcf-473f-ad3d-03cfe5d20f6f.jpg)
+https://s3.cn-north-1.amazonaws.com.cn/tws-upload/images/1595411729756-a504d3e6-ebcf-473f-ad3d-03cfe5d20f6f.jpg
 
 ___
 ## 3.PDCA
