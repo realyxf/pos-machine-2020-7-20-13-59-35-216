@@ -1,4 +1,4 @@
-const productList = [
+const dataBase = [
     {
        barcode: 'ITEM000000',
        name: 'Coca-Cola',
@@ -30,76 +30,79 @@ const productList = [
        price: 4
      }
  ];
- var cartItemDetails = new Array();
- var total=0;
 
 function printReceipt(barcodes) {
-    var count=countItems(barcodes);
-    
-    //getItemInfo
-    for (i in barcodes) {
-        var item=getItemInfo(barcodes[i])
+    let cartList = countCartListNum(barcodes);
+    let cartInfo = getCartInfo(cartList);
+    let cartInfoWithSubtotal = getCartInfoWithSubtotal(cartInfo);
+    let total = getCartTotal(cartInfoWithSubtotal);
+    let receipt = formatReceipt(cartInfoWithSubtotal,total);
 
-        if(cartItemDetails.length==0){
-            cartItemDetails.push(item);
+    console.log(receipt);
+}
+
+function countCartListNum(barcodes){
+    let CartListNum = new Map();
+
+    for(barCodeIndex in barcodes){
+        if(CartListNum.has(barcodes[barCodeIndex])){
+            let curItemQuantity = CartListNum.get(barcodes[barCodeIndex]);
+            CartListNum.set(barcodes[barCodeIndex],curItemQuantity+1);
         }
         else{
-            for(i in cartItemDetails){
-                if(cartItemDetails[i].name==item.name){
-                    cartItemDetails[i].quantity++;
-                }
-                else if(i==(cartItemDetails.length-1)){
-                    cartItemDetails.push(item);
-                }
+            CartListNum.set(barcodes[barCodeIndex],1);
+        }
+    }
+    return CartListNum;
+}
+
+function getCartInfo(cartList) {
+    let cartInfo = new Array();
+    for (var [itemBarcode, itemQuantity] of cartList) {
+        for(dataBaseIndex in dataBase){
+            if(itemBarcode == dataBase[dataBaseIndex].barcode){
+                cartInfo.push({
+                    name: dataBase[dataBaseIndex].name,
+                    quantity: itemQuantity,
+                    unitPrice: dataBase[dataBaseIndex].price
+                })
             }
         }
-   }
-
-   //getItemSubTotal
-   for(i in cartItemDetails){
-       var subTotal=getItemSubTotal(cartItemDetails[i]);
-       cartItemDetails[i].subTotal=subTotal;
-   }
-
-
-   //getTotal
-   for(i in cartItemDetails){
-       total=total+getTotal(cartItemDetails[i]);
-   }
-
-   
-   var str='';
-   str='\n***<store earning no money>Receipt ***\n';
-   for(i in cartItemDetails){
-       str = str + 'Name: ' + cartItemDetails[i].name + ', ';
-       str = str + 'Quantity: ' + cartItemDetails[i].quantity + ', ';
-       str = str + 'Unit price: ' + cartItemDetails[i].unitPrice + ' (yuan), ';
-       str = str + 'Subtotal: ' + cartItemDetails[i].subTotal + ' (yuan)\n';
-   }
-   str = str + '----------------------\n';
-   str = str + 'Total: ' + total + ' (yuan)\n';
-   str = str + '**********************';
-   console.log(str);
-
+    }
+    return cartInfo;
 }
 
-function countItems(barcodes){
-    return barcodes.length;
+function getCartInfoWithSubtotal(cartInfo){
+    for(cartInfoIndex in cartInfo){
+        let itemSubTotal= cartInfo[cartInfoIndex].quantity * cartInfo[cartInfoIndex].unitPrice;
+        cartInfo[cartInfoIndex].subTotal=itemSubTotal;
+    }
+    return cartInfo ;
 }
 
-function getItemInfo(barcode){
-    for (i in productList) {
-        if(productList[i].barcode==barcode){
-            return ({name: productList[i].name, quantity: 1, unitPrice:productList[i].price});
-        }
-   }
+function getCartTotal(cartInfoWithSubtotal){
+    let total = 0;
+    for(cartIndex in cartInfoWithSubtotal){
+        total += (cartInfoWithSubtotal[cartIndex].subTotal);
+    }
+    return total;
 }
 
-function getItemSubTotal(cartItemDetail){
-    return cartItemDetail.quantity*cartItemDetail.unitPrice;
-}
-function getTotal(cartItemDetail){
-    return cartItemDetail.subTotal;
+function formatReceipt(cartInfoWithSubtotal,total){
+    let str='';
+    let newLine='\n'
+    str = newLine +'***<store earning no money>Receipt ***' + newLine;
+    for(cartIndex in cartInfoWithSubtotal){
+        str = str + 'Name: ' + cartInfoWithSubtotal[cartIndex].name + ', ';
+        str = str + 'Quantity: ' + cartInfoWithSubtotal[cartIndex].quantity + ', ';
+        str = str + 'Unit price: ' + cartInfoWithSubtotal[cartIndex].unitPrice + ' (yuan), ';
+        str = str + 'Subtotal: ' + cartInfoWithSubtotal[cartIndex].subTotal + ' (yuan)' + newLine;
+    }
+    str = str + '----------------------' + newLine;
+    str = str + 'Total: ' + total + ' (yuan)' + newLine;
+    str = str + '**********************';
+
+    return str;
 }
 
 module.exports = {
