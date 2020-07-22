@@ -3,12 +3,13 @@
 2. 获取商品的信息（输入：barcode - int；输出：cartItemDetails - json对象数组）
 3. 获取同类商品的总价 （输入：cartItemDetail - json对象；输出：subTotal - int）
 4. 获取总价（输入：cartItemDetail - json对象；输出：total - int）
-5. 格式化数据（输入：cartItemDetails - json对象数组；输出：cart：string）
-6. 控制台输出打印
+5. 格式化数据（输入：cartItemDetails - json对象数组；输出：receipt：string）
+6. 控制台输出打印(输入：receipt：string)
 ___
 ## 2.上下文图
 
 ![](https://s3.cn-north-1.amazonaws.com.cn/tws-upload/images/1595411729756-a504d3e6-ebcf-473f-ad3d-03cfe5d20f6f.jpg)
+
 ___
 ## 3.PDCA
 #### 总体：
